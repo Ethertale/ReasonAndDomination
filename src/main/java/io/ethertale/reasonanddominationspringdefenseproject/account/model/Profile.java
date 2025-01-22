@@ -17,13 +17,15 @@ public class Profile {
     private String username;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private String email;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AccountRole role;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AccountStatus status;
-    @Column(name = "profile_picture")
+    @Column(name = "profile_picture", length = 1000)
     private String profilePicture;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "profile")
     private List<Hero> heroes;
@@ -33,10 +35,11 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(UUID id, String username, String password, AccountRole role, AccountStatus status, String profilePicture, List<Hero> heroes, LocalDateTime createdOn) {
+    public Profile(UUID id, String username, String password, String email, AccountRole role, AccountStatus status, String profilePicture, List<Hero> heroes, LocalDateTime createdOn) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.email = email;
         this.role = role;
         this.status = status;
         this.profilePicture = profilePicture;
@@ -66,6 +69,14 @@ public class Profile {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public AccountRole getRole() {
@@ -106,5 +117,20 @@ public class Profile {
 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                ", createdOn=" + createdOn +
+                ", heroes=" + heroes +
+                ", profilePicture='" + profilePicture + '\'' +
+                '}';
     }
 }

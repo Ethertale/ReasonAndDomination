@@ -9,4 +9,15 @@ import java.util.UUID;
 @Repository
 public interface ProfileRepo extends JpaRepository<Profile, UUID> {
 
+    boolean findByUsername(String name);
+
+    boolean findByEmail(String email);
+
+    boolean findByEmailAndPassword(String email, String password);
+
+    boolean existsByEmailAndPassword(String email, String password);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }
