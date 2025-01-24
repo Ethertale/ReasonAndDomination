@@ -42,8 +42,20 @@ public class Item {
     private int minDamage;
     @Column(name = "max_damage")
     private int maxDamage;
+    @Column
+    private String slug;
+
+    public void setSlug(String slug) {
+        this.slug = name.toLowerCase()
+                .replaceAll("\\s", "-")
+                .replaceAll("'", "")
+                .replaceAll(",", "");
+    }
 
     public String getSlug() {
-        return name.toLowerCase().replaceAll("\\s", "-").replaceAll("'", "");
+        return name.toLowerCase()
+                .replaceAll("\\s", "-")
+                .replaceAll("'", "")
+                .replaceAll(",", "");
     }
 }
