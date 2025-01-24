@@ -133,7 +133,7 @@
                         <div class="row">
                             <div class="col-12 col-lg-5">
                                 <h2 class="text-center">Wear</h2>
-                                <form th:object="${formWear}" th:method="post" th:action="@{/database-dar/item-wear-create}">
+                                <form th:object="${formItem}" th:method="post" th:action="@{/database-dar/item-create}">
                                     <div class="form-group">
                                         <label for="itemWearName">Name:</label>
                                         <input th:field="*{name}" required type="text" class="form-control" id="itemWearName" placeholder="Name">
@@ -158,6 +158,10 @@
                                             <option value="TRINKET">TRINKET</option>
                                             <option value="WAIST">WAIST</option>
                                             <option value="WRIST">WRIST</option>
+                                            <option value="ONE_HAND">ONE_HAND</option>
+                                            <option value="TWO_HAND">TWO_HAND</option>
+                                            <option value="OFF_HAND">OFF_HAND</option>
+                                            <option value="RANGED">RANGED</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -198,79 +202,32 @@
                                         <label for="itemSpirit">Spirit:</label>
                                         <input th:field="*{spirit}" type="number" class="form-control" id="itemSpirit">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="itemMinDamage">Minimum Damage:</label>
+                                        <input th:field="*{minDamage}" type="number" class="form-control" id="itemMinDamage">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="itemMaxDamage">Minimum Damage:</label>
+                                        <input th:field="*{maxDamage}" type="number" class="form-control" id="itemMaxDamage">
+                                    </div>
                                     <button type="submit" class="btn btn-primary">Create Wear</button>
-                                </form>
-                            </div>
-                            <div class="col-0 col-lg-2">
-                            </div>
-                            <div class="col-12 col-lg-5">
-                                <h2 class="text-center">Weapon</h2>
-                                <form th:object="${formWeapon}" th:method="post" th:action="@{/database-dar/item-weapon-create}">
-                                    <div class="form-group">
-                                        <label for="itemWeaponName">Name:</label>
-                                        <input th:field="*{name}" required type="text" class="form-control" id="itemWeaponName" placeholder="Name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="imageLinkWeapon">Image Link:</label>
-                                        <input th:field="*{imageLink}" type="text" class="form-control" id="imageLinkWeapon" placeholder="https://link-to-img.com/123!@#">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemTypeWeapon">Type:</label>
-                                        <select th:field="*{type}" required id="itemTypeWeapon" class="form-control">
-                                            <option value="ONE_HAND">ONE_HAND</option>
-                                            <option value="TWO_HAND">TWO_HAND</option>
-                                            <option value="OFF_HAND">OFF_HAND</option>
-                                            <option value="RANGED">RANGED</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponRarity">Rarity:</label>
-                                        <select th:field="*{rarity}" required id="itemWeaponRarity">
-                                            <option value="COMMON">COMMON</option>
-                                            <option value="UNCOMMON">UNCOMMON</option>
-                                            <option value="RARE">RARE</option>
-                                            <option value="EPIC">EPIC</option>
-                                            <option value="LEGENDARY">LEGENDARY</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponDescription">Description:</label>
-                                        <textarea th:field="*{description}" id="itemWeaponDescription" cols="30" rows="10"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponStrength">Strength:</label>
-                                        <input th:field="*{strength}" type="number" class="form-control" id="itemWeaponStrength">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponAgility">Agility:</label>
-                                        <input th:field="*{agility}" type="number" class="form-control" id="itemWeaponAgility">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponIntellect">Intellect:</label>
-                                        <input th:field="*{intellect}" type="number" class="form-control" id="itemWeaponIntellect">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponStamina">Stamina:</label>
-                                        <input th:field="*{stamina}" type="number" class="form-control" id="itemWeaponStamina">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponSpirit">Spirit:</label>
-                                        <input th:field="*{spirit}" type="number" class="form-control" id="itemWeaponSpirit">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponMinDamage">Minimum Damage:</label>
-                                        <input th:field="*{minDamage}" type="number" class="form-control" id="itemWeaponMinDamage">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="itemWeaponMaxDamage">Maximum Damage:</label>
-                                        <input th:field="*{maxDamage}" type="number" class="form-control" id="itemWeaponMaxDamage">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Create Weapon</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+<!--        TODO Create Item Database-->
+<!--        Use Ternary Operator in Thymeleaf-->
+<!--        <td th:text="${taxHistory.landValue &gt; 0 ? taxHistory.landValue : '&#45;&#45;' }">[taxHistory.landValue]</td>-->
+        <div class="container">
+            <div class="row">
+                <th:block th:each="item: ${items}">
+                    <tr>
+                        <td><a th:href="@{items/{name}(name=${item.getSlug()})}"><img th:src="${item.getImage()}" alt=""></a></td>
+                    </tr>
+                </th:block>
             </div>
         </div>
     </div>

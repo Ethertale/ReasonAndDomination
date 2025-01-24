@@ -21,7 +21,7 @@ public class ItemWear {
     private String image;
     @Column
     @Enumerated(EnumType.STRING)
-    ItemTypeWear type;
+    ItemType type;
     @Column(nullable = false)
     ItemRarity rarity;
     @Column
@@ -39,4 +39,7 @@ public class ItemWear {
     @Column
     private int spirit;
 
+    public String getSlug() {
+        return name.toLowerCase().replaceAll("\\s", "-").replaceAll("'", "");
+    }
 }

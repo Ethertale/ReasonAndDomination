@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ItemWeapon {
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,11 +21,13 @@ public class ItemWeapon {
     private String image;
     @Column
     @Enumerated(EnumType.STRING)
-    ItemTypeWeapon type;
+    ItemType type;
     @Column(nullable = false)
     ItemRarity rarity;
     @Column
     private String description;
+    @Column
+    private int armour;
     @Column
     private int strength;
     @Column
@@ -41,4 +43,7 @@ public class ItemWeapon {
     @Column(name = "max_damage")
     private int maxDamage;
 
+    public String getSlug() {
+        return name.toLowerCase().replaceAll("\\s", "-").replaceAll("'", "");
+    }
 }

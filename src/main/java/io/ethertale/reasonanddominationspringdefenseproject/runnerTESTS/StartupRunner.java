@@ -1,20 +1,16 @@
 package io.ethertale.reasonanddominationspringdefenseproject.runnerTESTS;
 
-import io.ethertale.reasonanddominationspringdefenseproject.item.model.ItemWear;
-import io.ethertale.reasonanddominationspringdefenseproject.item.repo.ItemWearRepo;
-import io.ethertale.reasonanddominationspringdefenseproject.item.service.ItemWearService;
+import io.ethertale.reasonanddominationspringdefenseproject.item.service.ItemService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StartupRunner implements CommandLineRunner {
 
-    ItemWearService itemWearService;
-    ItemWearRepo itemWearRepo;
+    ItemService itemService;
 
-    public StartupRunner(ItemWearService itemWearService, ItemWearRepo itemWearRepo) {
-        this.itemWearService = itemWearService;
-        this.itemWearRepo = itemWearRepo;
+    public StartupRunner(ItemService itemService) {
+        this.itemService = itemService;
     }
 
     @Override
