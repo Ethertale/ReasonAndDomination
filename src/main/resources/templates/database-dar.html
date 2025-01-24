@@ -133,7 +133,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-12 col-lg-5">
-                                <h2 class="text-center">Wear</h2>
+                                <h2 class="text-center">Item</h2>
                                 <form th:object="${formItem}" th:method="post" th:action="@{/database-dar/item-create}">
                                     <div class="form-group">
                                         <label for="itemWearName">Name:</label>
@@ -222,15 +222,6 @@
 <!--        TODO Create Item Database-->
 <!--        Use Ternary Operator in Thymeleaf-->
 <!--        <td th:text="${taxHistory.landValue &gt; 0 ? taxHistory.landValue : '&#45;&#45;' }">[taxHistory.landValue]</td>-->
-        <div class="container">
-            <div class="row">
-                <th:block th:each="item: ${items}">
-                    <tr>
-                        <td><a th:href="@{items/{name}(name=${item.getSlug()})}"><img th:src="${item.getImage()}" alt=""></a></td>
-                    </tr>
-                </th:block>
-            </div>
-        </div>
     </div>
 </div>
 <footer th:replace="~{templates::footer}"></footer>
