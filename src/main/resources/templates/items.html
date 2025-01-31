@@ -7,47 +7,37 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Document</title>
+    <title>R&D - Items Database</title>
     <style>
         * {
             color: white;
+        }
+        option {
+            color: black;
         }
     </style>
 </head>
 <body style="background-image: url('https://i.ibb.co/6g0crpd/background.png')">
 <nav th:replace="~{templates::header}"></nav>
 
-<div class="container" style="border: 1px solid black">
+<div class="container" style="border: 1px solid black; background-color: rgba(0, 0, 0, 0.3)">
     <h2>Items</h2>
-    <form th:method="post">
+    <form class="d-inline-flex flex-column" th:method="post">
         <div class="form-group">
             <label for="itemName">Name: </label>
             <input type="text" class="form-control" id="itemName">
         </div>
 <!--        TODO Create form to sort items-->
         <div class="form-group">
-            <label for="itemTypeSelect">Type: </label>
-            <select id="itemTypeSelect" class="form-control">
-                <option value="BACK">BACK</option>
-                <option value="CHEST">CHEST</option>
-                <option value="FEET">FEET</option>
-                <option value="FINGER">FINGER</option>
-                <option value="HANDS">HANDS</option>
-                <option value="HEAD">HEAD</option>
-                <option value="LEGS">LEGS</option>
-                <option value="NECK">NECK</option>
-                <option value="SHIELD">SHIELD</option>
-                <option value="SHOULDER">SHOULDER</option>
-                <option value="TRINKET">TRINKET</option>
-                <option value="WAIST">WAIST</option>
-                <option value="WRIST">WRIST</option>
-                <option value="ONE_HAND">ONE_HAND</option>
-                <option value="TWO_HAND">TWO_HAND</option>
-                <option value="OFF_HAND">OFF_HAND</option>
-                <option value="RANGED">RANGED</option>
+            <label for="itemSortStyle">Sort By: </label>
+            <select id="itemSortStyle" class="form-control">
+                <option value="NameAsc">Name Asc.</option>
+                <option value="NameDesc">Name Desc.</option>
+                <option value="Rarity">Rarity</option>
+                <option value="ItemType">Item Type</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Apply Filter</button>
+        <button type="submit" class="btn btn-primary mz b-5">Apply Filter</button>
     </form>
     <div class="container d-flex flex-column">
         <table class="table">
@@ -64,7 +54,16 @@
                 <tbody>
                     <tr>
                         <th scope="row"><a th:href="'items/' + ${item.getSlug()}"><img th:src="${item.getImage()}" alt="" style="max-width: 50px"></a></th>
-                        <td><a th:text="${item.getName()}" th:href="'items/' + ${item.getSlug()}"></a></td>
+                        <th:block th:switch="${item.getRarity().name()}">
+                            <td th:case="'COMMON'" class="m-3"><a style="color:gray" th:text="${item.getName()}" th:href="'items/' + ${item.getSlug()}"></a></td>
+                            <td th:case="'UNCOMMON'" class="m-3"><a style="color:green" th:text="${item.getName()}" th:href="'items/' + ${item.getSlug()}"></a></td>
+                            <td th:case="'RARE'" class="m-3"><a style="color:royalblue" th:text="${item.getName()}" th:href="'items/' + ${item.getSlug()}"></a></td>
+                            <td th:case="'EPIC'" class="m-3"><a style="color:rebeccapurple" th:text="${item.getName()}" th:href="'items/' + ${item.getSlug()}"></a></td>
+                            <td th:case="'LEGENDARY'" class="m-3"><a style="color:darkorange" th:text="${item.getName()}" th:href="'items/' + ${item.getSlug()}"></a></td>
+                            <td th:case="*">Unknown Rarity</td>
+                        </th:block>
+<!--                        <td><a th:text="${item.getName()}" th:href="'items/' + ${item.getSlug()}"></a></td>-->
+
                         <td th:text="${item.getType()}"></td>
                         <td>@mdo</td>
                     </tr>

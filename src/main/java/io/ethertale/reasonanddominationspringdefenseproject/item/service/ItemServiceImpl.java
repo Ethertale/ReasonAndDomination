@@ -47,6 +47,8 @@ public class ItemServiceImpl implements ItemService {
                 .maxDamage(maxDamage)
                 .build();
 
+        newItem.setSlug(name);
+
 
         return repo.save(newItem);
     }
