@@ -45,17 +45,11 @@ public class Item {
     @Column
     private String slug;
 
-    public void setSlug(String slug) {
+    public void setSlug(String name) {
         this.slug = name.toLowerCase()
                 .replaceAll("\\s", "-")
                 .replaceAll("'", "")
                 .replaceAll(",", "");
     }
 
-    public String getSlug() {
-        return name.toLowerCase()
-                .replaceAll("\\s", "-")
-                .replaceAll("'", "")
-                .replaceAll(",", "");
-    }
 }
