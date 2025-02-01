@@ -4,6 +4,7 @@ import io.ethertale.reasonanddominationspringdefenseproject.account.model.Profil
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -11,7 +12,7 @@ public interface ProfileRepo extends JpaRepository<Profile, UUID> {
 
     boolean findByUsername(String name);
 
-    boolean findByEmail(String email);
+    Optional<Profile> findByEmail(String email);
 
     boolean findByEmailAndPassword(String email, String password);
 

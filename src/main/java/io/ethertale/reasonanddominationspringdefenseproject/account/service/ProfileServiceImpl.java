@@ -4,11 +4,14 @@ import io.ethertale.reasonanddominationspringdefenseproject.account.model.Accoun
 import io.ethertale.reasonanddominationspringdefenseproject.account.model.AccountStatus;
 import io.ethertale.reasonanddominationspringdefenseproject.account.model.Profile;
 import io.ethertale.reasonanddominationspringdefenseproject.account.repo.ProfileRepo;
+import io.ethertale.reasonanddominationspringdefenseproject.web.dto.FormLoginDTO;
 import io.ethertale.reasonanddominationspringdefenseproject.web.dto.FormRegisterDTO;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,6 +37,21 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setStatus(AccountStatus.ACTIVE);
         profile.setCreatedOn(LocalDateTime.now());
         profileRepo.save(profile);
+    }
+
+    public Profile loginProfile(FormLoginDTO formLoginDTO){
+
+        Optional<Profile> optionProfile = profileRepo.findByEmail(formLoginDTO.getEmail());
+        if (optionProfile.isEmpty()){
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+
+        Profile profile = optionProfile.get();
+        if (!profile.getPassword().equals(formLoginDTO.getPassword())){
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        return profile;
     }
 
     @Override

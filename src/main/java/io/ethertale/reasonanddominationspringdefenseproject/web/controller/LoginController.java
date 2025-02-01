@@ -1,5 +1,6 @@
 package io.ethertale.reasonanddominationspringdefenseproject.web.controller;
 
+import io.ethertale.reasonanddominationspringdefenseproject.account.model.Profile;
 import io.ethertale.reasonanddominationspringdefenseproject.account.repo.ProfileRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.account.service.ProfileService;
 import io.ethertale.reasonanddominationspringdefenseproject.web.dto.FormLoginDTO;
@@ -36,15 +37,17 @@ public class LoginController {
 
     @PostMapping
     public String loginProfile(@ModelAttribute FormLoginDTO formLoginDTO, Model model) {
-        if (profileRepo.existsByEmailAndPassword(formLoginDTO.getEmail(), formLoginDTO.getPassword()) ){
-            System.out.println("User Exists");
-            return "redirect:/";
-        }else {
-            model.addAttribute("message", loginMessage);
-            loginMessage = "Wrong email or password";
-            System.out.println("User Doesn't Exist");
-            return "redirect:/login";
-        }
+//        if (profileRepo.existsByEmailAndPassword(formLoginDTO.getEmail(), formLoginDTO.getPassword()) ){
+//            System.out.println("User Exists");
+//            return "redirect:/";
+//        }else {
+//            model.addAttribute("message", loginMessage);
+//            loginMessage = "Wrong email or password";
+//            System.out.println("User Doesn't Exist");
+//            return "redirect:/login";
+//        }
+        profileService.loginProfile(formLoginDTO);
 
+        return "redirect:/home";
     }
 }

@@ -1,13 +1,24 @@
 package io.ethertale.reasonanddominationspringdefenseproject.account.model;
 
+import io.ethertale.reasonanddominationspringdefenseproject.forumPost.model.ForumPost;
 import io.ethertale.reasonanddominationspringdefenseproject.playerCharacter.model.Hero;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "profile")
 public class Profile {
 
     @Id
@@ -29,95 +40,10 @@ public class Profile {
     private String profilePicture;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "profile")
     private List<Hero> heroes;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
+    private List<ForumPost> posts;
     @Column(nullable = false)
     private LocalDateTime createdOn;
-
-    public Profile() {
-    }
-
-    public Profile(UUID id, String username, String password, String email, AccountRole role, AccountStatus status, String profilePicture, List<Hero> heroes, LocalDateTime createdOn) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-        this.status = status;
-        this.profilePicture = profilePicture;
-        this.heroes = heroes;
-        this.createdOn = createdOn;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public AccountRole getRole() {
-        return role;
-    }
-
-    public void setRole(AccountRole role) {
-        this.role = role;
-    }
-
-    public AccountStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AccountStatus status) {
-        this.status = status;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
-    public List<Hero> getHeroes() {
-        return heroes;
-    }
-
-    public void setHeroes(List<Hero> heroes) {
-        this.heroes = heroes;
-    }
-
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
 
     @Override
     public String toString() {

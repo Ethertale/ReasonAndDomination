@@ -33,20 +33,20 @@
                             <th scope="col">Type</th>
                             <th scope="col">Desc</th>
                             <th scope="col">STR</th>
-                            <th scope="col">DEX</th>
-                            <th scope="col">CON</th>
+                            <th scope="col">AGI</th>
                             <th scope="col">INT</th>
-                            <th scope="col">WSD</th>
+                            <th scope="col">STM</th>
+                            <th scope="col">SPR</th>
                         </tr>
                         </thead>
                         <tr th:each="race: ${races}">
                             <td th:text="${race.name}"></td>
                             <td th:text="${race.description}"></td>
                             <td th:text="${race.strength}"></td>
-                            <td th:text="${race.dexterity}"></td>
-                            <td th:text="${race.constitution}"></td>
+                            <td th:text="${race.agility}"></td>
                             <td th:text="${race.intellect}"></td>
-                            <td th:text="${race.wisdom}"></td>
+                            <td th:text="${race.stamina}"></td>
+                            <td th:text="${race.spirit}"></td>
                         </tr>
                     </table>
                 </div>

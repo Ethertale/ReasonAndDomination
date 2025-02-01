@@ -1,5 +1,6 @@
 package io.ethertale.reasonanddominationspringdefenseproject.forumPost.model;
 
+import io.ethertale.reasonanddominationspringdefenseproject.account.model.Profile;
 import io.ethertale.reasonanddominationspringdefenseproject.forumPostContent.model.ForumPostContent;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +27,9 @@ public class ForumPost {
     private String slug;
     @Column
     private String content;
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    private Profile author;
     @OneToMany(mappedBy = "forumPost", cascade = CascadeType.ALL)
     private Set<ForumPostContent> comments;
 
