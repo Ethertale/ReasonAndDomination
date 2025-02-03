@@ -4,6 +4,10 @@ import io.ethertale.reasonanddominationspringdefenseproject.account.model.Profil
 import io.ethertale.reasonanddominationspringdefenseproject.account.repo.ProfileRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.account.service.ProfileService;
 import io.ethertale.reasonanddominationspringdefenseproject.web.dto.FormLoginDTO;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,17 +40,12 @@ public class LoginController {
     }
 
     @PostMapping
-    public String loginProfile(@ModelAttribute FormLoginDTO formLoginDTO, Model model) {
-//        if (profileRepo.existsByEmailAndPassword(formLoginDTO.getEmail(), formLoginDTO.getPassword()) ){
-//            System.out.println("User Exists");
-//            return "redirect:/";
-//        }else {
-//            model.addAttribute("message", loginMessage);
-//            loginMessage = "Wrong email or password";
-//            System.out.println("User Doesn't Exist");
-//            return "redirect:/login";
-//        }
-        profileService.loginProfile(formLoginDTO);
+    public String loginProfile(@ModelAttribute FormLoginDTO formLoginDTO, HttpServletResponse response, HttpSession session) {
+        Profile loggedUser = profileService.loginProfile(formLoginDTO);
+        session.setAttribute("user_id", loggedUser.getId());
+        session.setAttribute("user_name", loggedUser.getUsername());
+        session.setAttribute("user_picture", loggedUser.getProfilePicture());
+        session.setAttribute("user_role", loggedUser.getRole());
 
         return "redirect:/home";
     }

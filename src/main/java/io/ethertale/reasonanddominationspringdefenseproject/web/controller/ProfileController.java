@@ -3,8 +3,10 @@ package io.ethertale.reasonanddominationspringdefenseproject.web.controller;
 import io.ethertale.reasonanddominationspringdefenseproject.account.model.Profile;
 import io.ethertale.reasonanddominationspringdefenseproject.account.repo.ProfileRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.account.service.ProfileService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +27,13 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView profile(@PathVariable UUID id) {
+    public ModelAndView profile(@PathVariable UUID id, HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        id = userId;
+
         ModelAndView modelAndView = new ModelAndView("profile");
-        modelAndView.addObject("userProfile", profileRepo.findById(id));
+        modelAndView.addObject("user", profileRepo.findById(userId));
         modelAndView.setViewName("profile");
         return modelAndView;
     }
