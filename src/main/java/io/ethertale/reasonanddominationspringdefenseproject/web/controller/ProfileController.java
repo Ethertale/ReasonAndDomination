@@ -30,10 +30,9 @@ public class ProfileController {
     public ModelAndView profile(@PathVariable UUID id, HttpSession session) {
 
         UUID userId = (UUID) session.getAttribute("user_id");
-        id = userId;
 
         ModelAndView modelAndView = new ModelAndView("profile");
-        modelAndView.addObject("user", profileRepo.findById(userId));
+        modelAndView.addObject("user", profileRepo.findById(id));
         modelAndView.setViewName("profile");
         return modelAndView;
     }

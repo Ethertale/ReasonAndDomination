@@ -17,21 +17,50 @@
 <body style="background-image: url('https://i.ibb.co/6g0crpd/background.png')">
 <nav th:replace="~{templates::header}"></nav>
 
-<div th:object="${session}" class="container-fluid p-2">
-    <div class="row">
-        <div class="col-12 col-lg-1 bg-secondary container-fluid d-flex justify-content-start flex-column">
-            <a href=""><img width="20" height="20" src="https://img.icons8.com/fluency-systems-regular/50/guest-male.png" alt="guest-male"/> Account</a>
-            <a href=""><img width="20" height="20" src="https://img.icons8.com/small/16/picture.png" alt="picture"/> Profile Picture</a>
-            <a href=""><img width="20" height="20" src="https://img.icons8.com/ios/50/settings--v1.png" alt="settings--v1"/> Settings</a>
-            <a href="/logout"><img width="20" height="20" src="https://img.icons8.com/ios/50/settings--v1.png" alt="settings--v1"/> Log Out</a>
+
+<div class="container-fluid">
+    <th:block th:switch="${session.get('user_id')}">
+        <div th:case="${user.get().getId()}" class="container-fluid p-2">
+            <div class="row">
+                <div class="col-12 col-lg-1 bg-secondary container-fluid d-flex justify-content-start flex-column">
+                    <a href=""><img width="20" height="20"
+                                    src="https://img.icons8.com/fluency-systems-regular/50/guest-male.png"
+                                    alt="guest-male"/> Account</a>
+                    <a href=""><img width="20" height="20" src="https://img.icons8.com/small/16/picture.png"
+                                    alt="picture"/> Profile Picture</a>
+                    <a href=""><img width="20" height="20" src="https://img.icons8.com/ios/50/settings--v1.png"
+                                    alt="settings--v1"/> Settings</a>
+                    <a href="/logout"><img width="20" height="20" src="https://img.icons8.com/ios/50/left--v1.png"
+                                           alt="left--v1"/> Log Out</a>
+                </div>
+                <div class="col-12 col-lg-11 container-fluid d-flex align-items-center flex-column">
+                    <img th:src="${session.get('user_picture')}" style="width: 20%; max-width: 256px; aspect-ratio: 1/1"
+                         alt="">
+                    <h3 th:text="${session.get('user_name')}"></h3>
+                    <small><small th:text="${session.get('user_role')}"></small></small>
+                    <small th:text="${session.get('user_id')}"></small>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-lg-11 container-fluid d-flex align-items-center flex-column">
-            <img th:src="${session.get('user_picture')}" style="width: 20%; max-width: 256px; aspect-ratio: 1/1" alt="">
-            <h3 th:text="${session.get('user_name')}"></h3>
-            <small><small th:text="${session.get('user_role')}"></small></small>
-            <small th:text="${session.get('user_id')}"></small>
+        <div th:case="*" class="container-fluid p-2">
+            <div class="row">
+                <!--            <div class="col-12 col-lg-1 bg-secondary container-fluid d-flex justify-content-start flex-column">-->
+                <!--                <a href=""><img width="20" height="20" src="https://img.icons8.com/fluency-systems-regular/50/guest-male.png" alt="guest-male"/> Account</a>-->
+                <!--                <a href=""><img width="20" height="20" src="https://img.icons8.com/small/16/picture.png" alt="picture"/> Profile Picture</a>-->
+                <!--                <a href=""><img width="20" height="20" src="https://img.icons8.com/ios/50/settings&#45;&#45;v1.png" alt="settings&#45;&#45;v1"/> Settings</a>-->
+                <!--                <a href="/logout"><img width="20" height="20" src="https://img.icons8.com/ios/50/left&#45;&#45;v1.png" alt="left&#45;&#45;v1"/> Log Out</a>-->
+                <!--            </div>-->
+                <div class="col-12 col-lg-11 container-fluid d-flex align-items-center flex-column">
+                    <img th:src="${user.get().getProfilePicture()}" style="width: 20%; max-width: 256px; aspect-ratio: 1/1"
+                         alt="">
+                    <h3 th:text="${user.get().getUsername()}"></h3>
+                    <small><small th:text="${user.get().getRole()}"></small></small>
+                    <small th:text="${user.get().getId()}"></small>
+                </div>
+            </div>
         </div>
-    </div>
+    </th:block>
+
 </div>
 
 <footer th:replace="~{templates::footer}"></footer>

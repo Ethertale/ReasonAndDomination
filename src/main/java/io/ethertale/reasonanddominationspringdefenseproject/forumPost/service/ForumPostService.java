@@ -7,4 +7,6 @@ import java.util.List;
 public interface ForumPostService {
     List<ForumPost> getAllForumPosts();
     ForumPost createForumPost(String title, String content);
+
+    List<ForumPost> findLastFive();
 }

@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
@@ -37,6 +35,16 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setStatus(AccountStatus.ACTIVE);
         profile.setCreatedOn(LocalDateTime.now());
         profileRepo.save(profile);
+    }
+
+    @Override
+    public List<Profile> getAllProfiles() {
+        return profileRepo.findAll();
+    }
+
+    @Override
+    public List<Profile> getAllProfilesReversed() {
+        return profileRepo.findAll().stream().sorted(Comparator.comparing(Profile::getCreatedOn).reversed()).toList();
     }
 
     public Profile loginProfile(FormLoginDTO formLoginDTO){

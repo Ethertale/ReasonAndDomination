@@ -7,6 +7,11 @@ import io.ethertale.reasonanddominationspringdefenseproject.account.repo.Profile
 import io.ethertale.reasonanddominationspringdefenseproject.account.service.ProfileService;
 import io.ethertale.reasonanddominationspringdefenseproject.account.service.ProfileServiceImpl;
 import io.ethertale.reasonanddominationspringdefenseproject.dungeon.repo.DungeonRepo;
+import io.ethertale.reasonanddominationspringdefenseproject.forumPost.repo.ForumPostRepo;
+import io.ethertale.reasonanddominationspringdefenseproject.forumPost.service.ForumPostService;
+import io.ethertale.reasonanddominationspringdefenseproject.guides.model.PostType;
+import io.ethertale.reasonanddominationspringdefenseproject.guides.repo.GuidePostRepo;
+import io.ethertale.reasonanddominationspringdefenseproject.guides.service.GuidePostService;
 import io.ethertale.reasonanddominationspringdefenseproject.heroRace.model.HeroRace;
 import io.ethertale.reasonanddominationspringdefenseproject.heroRace.repo.HeroRaceRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.playerCharacter.model.Hero;
@@ -14,6 +19,7 @@ import io.ethertale.reasonanddominationspringdefenseproject.playerCharacter.mode
 import io.ethertale.reasonanddominationspringdefenseproject.playerCharacter.model.HeroRaces;
 import io.ethertale.reasonanddominationspringdefenseproject.playerCharacter.repo.HeroRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -35,13 +41,20 @@ public class HomeController {
     HeroRepository heroRepo;
     ProfileRepo profileRepo;
     ProfileService profileService;
+    ForumPostService forumPostService;
+    GuidePostRepo guidePostRepo;
+    GuidePostService guidePostService;
 
-    public HomeController(DungeonRepo dungeonRepo, HeroRaceRepo heroRaceRepo, HeroRepository heroRepo, ProfileRepo profileRepo, ProfileService profileService) {
-        this.dungeonRepo = dungeonRepo;
+    @Autowired
+    public HomeController(HeroRaceRepo heroRaceRepo, DungeonRepo dungeonRepo, HeroRepository heroRepo, ProfileRepo profileRepo, ProfileService profileService, ForumPostService forumPostService, GuidePostRepo guidePostRepo, GuidePostService guidePostService) {
         this.heroRaceRepo = heroRaceRepo;
+        this.dungeonRepo = dungeonRepo;
         this.heroRepo = heroRepo;
         this.profileRepo = profileRepo;
         this.profileService = profileService;
+        this.forumPostService = forumPostService;
+        this.guidePostRepo = guidePostRepo;
+        this.guidePostService = guidePostService;
     }
 
     @GetMapping
@@ -52,6 +65,10 @@ public class HomeController {
 
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("forumPosts", forumPostService.findLastFive());
+        modelAndView.addObject("edisonspireGuides", guidePostService.getGuidePostsByType(PostType.EDISONSPIRE_FOUNDRY));
+        modelAndView.addObject("geargrindGrottoGuides", guidePostService.getGuidePostsByType(PostType.GEARGRIND_GROTTO));
+        modelAndView.addObject("arenaS3Guides", guidePostService.getGuidePostsByType(PostType.ARENA_3));
         modelAndView.setViewName("index");
 
         return modelAndView;

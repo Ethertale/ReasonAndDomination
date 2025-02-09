@@ -30,7 +30,6 @@ public class ForumCreatePostController {
         return mav;
     }
 
-    // TODO Returns 404
     @PostMapping("/create")
     public String createPost(@ModelAttribute ForumPostForm forumPostForm){
         forumPostService.createForumPost(forumPostForm.getTitle(), forumPostForm.getContent());

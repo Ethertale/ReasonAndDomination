@@ -1,5 +1,6 @@
 package io.ethertale.reasonanddominationspringdefenseproject.web.controller;
 
+import io.ethertale.reasonanddominationspringdefenseproject.account.model.AccountRole;
 import io.ethertale.reasonanddominationspringdefenseproject.account.model.Profile;
 import io.ethertale.reasonanddominationspringdefenseproject.account.repo.ProfileRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.account.service.ProfileService;
@@ -8,6 +9,7 @@ import io.ethertale.reasonanddominationspringdefenseproject.heroRace.repo.HeroRa
 import io.ethertale.reasonanddominationspringdefenseproject.item.repo.ItemRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.item.service.ItemService;
 import io.ethertale.reasonanddominationspringdefenseproject.web.dto.ItemDTO;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,26 +26,30 @@ public class DatabaseDaRController {
 
     HeroRaceRepo heroRaceRepo;
     DungeonRepo dungeonRepo;
-    ProfileRepo profileRepo;
+
     ItemRepo itemRepo;
 
     ProfileService profileService;
     ItemService itemService;
 
 
-    public DatabaseDaRController(HeroRaceRepo heroRaceRepo, DungeonRepo dungeonRepo, ProfileRepo profileRepo, ItemRepo itemRepo, ProfileService profileService, ItemService itemService) {
+    public DatabaseDaRController(HeroRaceRepo heroRaceRepo, DungeonRepo dungeonRepo, ItemRepo itemRepo, ProfileService profileService, ItemService itemService) {
         this.heroRaceRepo = heroRaceRepo;
         this.dungeonRepo = dungeonRepo;
-        this.profileRepo = profileRepo;
+
         this.itemRepo = itemRepo;
         this.profileService = profileService;
         this.itemService = itemService;
     }
 
     @GetMapping
-    public ModelAndView databaseDaR(Model model) {
+    public ModelAndView databaseDaR(Model model, HttpSession session) {
+        if (session.getAttribute("user_role") != AccountRole.ADMIN){
+            return new ModelAndView("redirect:/home");
+        }
+
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("profiles", profileRepo.findAll().stream().sorted(Comparator.comparing(Profile::getCreatedOn).reversed()));
+        modelAndView.addObject("profiles", profileService.getAllProfilesReversed());
         modelAndView.addObject("dar", dungeonRepo.findAll());
         modelAndView.addObject("races", heroRaceRepo.findAll());
         modelAndView.addObject("items", itemRepo.findAll());
@@ -73,4 +79,5 @@ public class DatabaseDaRController {
     }
 
     //TODO Return Custom Error
+    //TODO REMOVE ALL REPOS FROM CONTROLLERS
 }

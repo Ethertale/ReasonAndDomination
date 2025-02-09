@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface ForumPostRepo extends JpaRepository<ForumPost, UUID> {
     ForumPost findBySlug(String slug);
+
 }

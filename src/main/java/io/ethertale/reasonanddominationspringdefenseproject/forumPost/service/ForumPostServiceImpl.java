@@ -6,6 +6,7 @@ import io.ethertale.reasonanddominationspringdefenseproject.web.dto.ForumPostFor
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -33,5 +34,15 @@ public class ForumPostServiceImpl implements ForumPostService {
         forumPost.setSlug(title);
 
         return forumPostRepo.save(forumPost);
+    }
+
+    @Override
+    public List<ForumPost> findLastFive() {
+        return forumPostRepo.findAll()
+                .stream()
+                .sorted(Comparator.comparing(ForumPost::getCreatedOn))
+                .toList()
+                .subList(forumPostRepo.findAll().size() - 5, forumPostRepo.findAll().size())
+                .stream().sorted(Comparator.comparing(ForumPost::getCreatedOn).reversed()).toList();
     }
 }
