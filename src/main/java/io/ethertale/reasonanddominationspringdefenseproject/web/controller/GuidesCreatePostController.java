@@ -1,11 +1,8 @@
 package io.ethertale.reasonanddominationspringdefenseproject.web.controller;
 
-import io.ethertale.reasonanddominationspringdefenseproject.guides.model.GuidePost;
 import io.ethertale.reasonanddominationspringdefenseproject.guides.model.PostType;
-import io.ethertale.reasonanddominationspringdefenseproject.guides.repo.GuidePostRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.guides.service.GuidePostService;
 import io.ethertale.reasonanddominationspringdefenseproject.web.dto.GuidePostForm;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class GuidesCreatePostController {
 
     GuidePostService guidePostService;
-    GuidePostRepo guidePostRepo;
 
     @Autowired
-    public GuidesCreatePostController(GuidePostService guidePostService, GuidePostRepo guidePostRepo) {
+    public GuidesCreatePostController(GuidePostService guidePostService) {
         this.guidePostService = guidePostService;
-        this.guidePostRepo = guidePostRepo;
     }
 
     @GetMapping
@@ -37,8 +32,8 @@ public class GuidesCreatePostController {
     }
 
     @PostMapping("/create")
-    public String createGuidePost(@ModelAttribute GuidePostForm guidePostForm, HttpSession session){
-        guidePostService.createGuidePost(guidePostForm.getTitle(), guidePostForm.getContent(), guidePostForm.getPostType());
+    public String createGuidePost(@ModelAttribute GuidePostForm guidePostForm){
+        guidePostService.createGuidePost(guidePostForm);
 
         return "redirect:/guides";
     }

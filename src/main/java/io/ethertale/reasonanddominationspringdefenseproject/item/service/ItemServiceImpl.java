@@ -5,7 +5,11 @@ import io.ethertale.reasonanddominationspringdefenseproject.item.model.ItemRarit
 import io.ethertale.reasonanddominationspringdefenseproject.item.model.ItemType;
 import io.ethertale.reasonanddominationspringdefenseproject.item.model.ItemWear;
 import io.ethertale.reasonanddominationspringdefenseproject.item.repo.ItemRepo;
+import io.ethertale.reasonanddominationspringdefenseproject.web.dto.ItemDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -17,40 +21,43 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item createItem(String name,
-                           String imageLink,
-                           ItemType type,
-                           ItemRarity rarity,
-                           String description,
-                           int armour,
-                           int strength,
-                           int agility,
-                           int intellect,
-                           int stamina,
-                           int spirit,
-                           int minDamage,
-                           int maxDamage) {
+    public Item createItem(ItemDTO itemDTO) {
+        if (!repo.existsByName(itemDTO.getName())) {
+            Item newItem = Item.builder()
+                    .name(itemDTO.getName())
+                    .image(itemDTO.getImageLink())
+                    .type(itemDTO.getType())
+                    .rarity(itemDTO.getRarity())
+                    .description(itemDTO.getDescription())
+                    .armour(itemDTO.getArmour())
+                    .strength(itemDTO.getStrength())
+                    .agility(itemDTO.getAgility())
+                    .intellect(itemDTO.getIntellect())
+                    .stamina(itemDTO.getStamina())
+                    .spirit(itemDTO.getSpirit())
+                    .minDamage(itemDTO.getMinDamage())
+                    .maxDamage(itemDTO.getMaxDamage())
+                    .build();
+            newItem.setSlug(itemDTO.getName());
+            return repo.save(newItem);
+        }
 
-        Item newItem = Item.builder()
-                .name(name)
-                .image(imageLink)
-                .type(type)
-                .rarity(rarity)
-                .description(description)
-                .armour(armour)
-                .strength(strength)
-                .agility(agility)
-                .intellect(intellect)
-                .stamina(stamina)
-                .spirit(spirit)
-                .minDamage(minDamage)
-                .maxDamage(maxDamage)
-                .build();
+        return null;
+    }
 
-        newItem.setSlug(name);
+    @Override
+    public List<Item> getAllItems() {
+        return repo.findAll();
+    }
 
+    @Override
+    public List<Item> getAllItemsReversed() {
+        return repo.findAll().stream().sorted(Comparator.comparing(Item::getId).reversed()).toList();
+    }
 
-        return repo.save(newItem);
+    @Override
+    public Item getItemBySlug(String slug) {
+        return repo.findBySlug(slug);
     }
 
 }

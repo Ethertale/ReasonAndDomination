@@ -1,6 +1,6 @@
 package io.ethertale.reasonanddominationspringdefenseproject.web.controller;
 
-import io.ethertale.reasonanddominationspringdefenseproject.guides.repo.GuidePostRepo;
+import io.ethertale.reasonanddominationspringdefenseproject.guides.service.GuidePostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +12,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/guides/posts")
 public class GuidesPostController {
 
-    GuidePostRepo guidePostRepo;
+    GuidePostService guidePostService;
 
     @Autowired
-    public GuidesPostController(GuidePostRepo guidePostRepo) {
-        this.guidePostRepo = guidePostRepo;
+    public GuidesPostController(GuidePostService guidePostService) {
+        this.guidePostService = guidePostService;
     }
 
     @GetMapping
@@ -29,7 +29,7 @@ public class GuidesPostController {
     @GetMapping("/{slug}")
     public ModelAndView getGuidePost(@PathVariable String slug){
         ModelAndView modelAndView = new ModelAndView("guidesPost");
-        modelAndView.addObject("specPost", guidePostRepo.findBySlug(slug));
+        modelAndView.addObject("specPost", guidePostService.getGuidePostsBySlug(slug));
         modelAndView.setViewName("guidesPost");
         return modelAndView;
     }

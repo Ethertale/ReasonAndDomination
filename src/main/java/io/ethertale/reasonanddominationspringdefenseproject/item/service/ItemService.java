@@ -4,19 +4,14 @@ import io.ethertale.reasonanddominationspringdefenseproject.item.model.Item;
 import io.ethertale.reasonanddominationspringdefenseproject.item.model.ItemRarity;
 import io.ethertale.reasonanddominationspringdefenseproject.item.model.ItemType;
 import io.ethertale.reasonanddominationspringdefenseproject.item.model.ItemWear;
+import io.ethertale.reasonanddominationspringdefenseproject.web.dto.ItemDTO;
+
+import java.util.List;
 
 public interface ItemService {
-    Item createItem(String name,
-                    String imageLink,
-                    ItemType type,
-                    ItemRarity rarity,
-                    String description,
-                    int armour,
-                    int strength,
-                    int agility,
-                    int intellect,
-                    int stamina,
-                    int spirit,
-                    int minDamage,
-                    int maxDamage);
+    Item createItem(ItemDTO itemDTO);
+
+    List<Item> getAllItems();
+    List<Item> getAllItemsReversed();
+    Item getItemBySlug(String slug);
 }

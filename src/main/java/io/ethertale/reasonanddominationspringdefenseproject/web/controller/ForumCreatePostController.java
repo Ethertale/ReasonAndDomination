@@ -1,8 +1,8 @@
 package io.ethertale.reasonanddominationspringdefenseproject.web.controller;
 
-import io.ethertale.reasonanddominationspringdefenseproject.forumPost.repo.ForumPostRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.forumPost.service.ForumPostService;
 import io.ethertale.reasonanddominationspringdefenseproject.web.dto.ForumPostForm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,11 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class ForumCreatePostController {
 
     ForumPostService forumPostService;
-    ForumPostRepo forumPostRepo;
 
-    public ForumCreatePostController(ForumPostService forumPostService, ForumPostRepo forumPostRepo) {
+    @Autowired
+    public ForumCreatePostController(ForumPostService forumPostService) {
         this.forumPostService = forumPostService;
-        this.forumPostRepo = forumPostRepo;
     }
 
     @GetMapping
@@ -32,7 +31,7 @@ public class ForumCreatePostController {
 
     @PostMapping("/create")
     public String createPost(@ModelAttribute ForumPostForm forumPostForm){
-        forumPostService.createForumPost(forumPostForm.getTitle(), forumPostForm.getContent());
+        forumPostService.createForumPost(forumPostForm);
 
         return "redirect:/forum";
     }

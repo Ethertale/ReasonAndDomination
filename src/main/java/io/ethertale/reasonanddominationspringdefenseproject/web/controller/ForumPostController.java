@@ -1,7 +1,7 @@
 package io.ethertale.reasonanddominationspringdefenseproject.web.controller;
 
-import io.ethertale.reasonanddominationspringdefenseproject.forumPost.repo.ForumPostRepo;
-import io.ethertale.reasonanddominationspringdefenseproject.web.dto.ForumPostForm;
+import io.ethertale.reasonanddominationspringdefenseproject.forumPost.service.ForumPostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,10 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/forum/posts")
 public class ForumPostController {
 
-    ForumPostRepo forumPostRepo;
+    ForumPostService forumPostService;
 
-    public ForumPostController(ForumPostRepo forumPostRepo) {
-        this.forumPostRepo = forumPostRepo;
+    @Autowired
+    public ForumPostController(ForumPostService forumPostService) {
+        this.forumPostService = forumPostService;
     }
 
     @GetMapping
@@ -26,7 +27,7 @@ public class ForumPostController {
     @GetMapping("/{slug}")
     public ModelAndView getPost(@PathVariable String slug){
         ModelAndView modelAndView = new ModelAndView("forumPost");
-        modelAndView.addObject("specPost", forumPostRepo.findBySlug(slug));
+        modelAndView.addObject("specPost", forumPostService.getForumPostBySlug(slug));
         modelAndView.setViewName("forumPost");
         return modelAndView;
     }

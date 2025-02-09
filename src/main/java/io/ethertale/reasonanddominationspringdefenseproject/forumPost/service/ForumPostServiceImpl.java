@@ -24,14 +24,24 @@ public class ForumPostServiceImpl implements ForumPostService {
     }
 
     @Override
-    public ForumPost createForumPost(String title, String content) {
+    public List<ForumPost> getAllForumPostsReversed() {
+        return forumPostRepo.findAll().stream().sorted(Comparator.comparing(ForumPost::getCreatedOn).reversed()).toList();
+    }
+
+    @Override
+    public ForumPost getForumPostBySlug(String slug) {
+        return forumPostRepo.findBySlug(slug);
+    }
+
+    @Override
+    public ForumPost createForumPost(ForumPostForm forumPostForm) {
         ForumPost forumPost = ForumPost.builder()
-                .title(title)
-                .content(content)
+                .title(forumPostForm.getTitle())
+                .content(forumPostForm.getContent())
                 .createdOn(LocalDateTime.now())
                 .build();
 
-        forumPost.setSlug(title);
+        forumPost.setSlug(forumPost.getTitle());
 
         return forumPostRepo.save(forumPost);
     }

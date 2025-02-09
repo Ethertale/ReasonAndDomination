@@ -1,15 +1,13 @@
 package io.ethertale.reasonanddominationspringdefenseproject.web.controller;
 
 import io.ethertale.reasonanddominationspringdefenseproject.account.model.AccountRole;
-import io.ethertale.reasonanddominationspringdefenseproject.account.model.Profile;
-import io.ethertale.reasonanddominationspringdefenseproject.account.repo.ProfileRepo;
 import io.ethertale.reasonanddominationspringdefenseproject.account.service.ProfileService;
-import io.ethertale.reasonanddominationspringdefenseproject.dungeon.repo.DungeonRepo;
-import io.ethertale.reasonanddominationspringdefenseproject.heroRace.repo.HeroRaceRepo;
-import io.ethertale.reasonanddominationspringdefenseproject.item.repo.ItemRepo;
+import io.ethertale.reasonanddominationspringdefenseproject.dungeon.service.DungeonService;
+import io.ethertale.reasonanddominationspringdefenseproject.heroRace.service.HeroRaceService;
 import io.ethertale.reasonanddominationspringdefenseproject.item.service.ItemService;
 import io.ethertale.reasonanddominationspringdefenseproject.web.dto.ItemDTO;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,28 +16,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Comparator;
-
 @Controller
 @RequestMapping("/database-dar")
 public class DatabaseDaRController {
 
-    HeroRaceRepo heroRaceRepo;
-    DungeonRepo dungeonRepo;
-
-    ItemRepo itemRepo;
-
     ProfileService profileService;
     ItemService itemService;
+    DungeonService dungeonService;
+    HeroRaceService heroRaceService;
 
-
-    public DatabaseDaRController(HeroRaceRepo heroRaceRepo, DungeonRepo dungeonRepo, ItemRepo itemRepo, ProfileService profileService, ItemService itemService) {
-        this.heroRaceRepo = heroRaceRepo;
-        this.dungeonRepo = dungeonRepo;
-
-        this.itemRepo = itemRepo;
+    @Autowired
+    public DatabaseDaRController(ProfileService profileService, ItemService itemService, DungeonService dungeonService, HeroRaceService heroRaceService) {
         this.profileService = profileService;
         this.itemService = itemService;
+        this.dungeonService = dungeonService;
+        this.heroRaceService = heroRaceService;
     }
 
     @GetMapping
@@ -50,9 +41,9 @@ public class DatabaseDaRController {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("profiles", profileService.getAllProfilesReversed());
-        modelAndView.addObject("dar", dungeonRepo.findAll());
-        modelAndView.addObject("races", heroRaceRepo.findAll());
-        modelAndView.addObject("items", itemRepo.findAll());
+        modelAndView.addObject("dar", dungeonService.getAllDungeons());
+        modelAndView.addObject("races", heroRaceService.getAllHeroRaces());
+        modelAndView.addObject("items", itemService.getAllItems());
         modelAndView.addObject("formItem", new ItemDTO());
         modelAndView.setViewName("database-dar");
         return modelAndView;
@@ -60,24 +51,9 @@ public class DatabaseDaRController {
 
     @PostMapping("/item-create")
     public String createItemWear(@ModelAttribute ItemDTO itemDTO, Model model) {
-        if (!itemRepo.existsByName(itemDTO.getName())) {
-            itemService.createItem(itemDTO.getName(),
-                    itemDTO.getImageLink(),
-                    itemDTO.getType(),
-                    itemDTO.getRarity(),
-                    itemDTO.getDescription(),
-                    itemDTO.getArmour(),
-                    itemDTO.getStrength(),
-                    itemDTO.getAgility(),
-                    itemDTO.getIntellect(),
-                    itemDTO.getStamina(),
-                    itemDTO.getSpirit(),
-                    itemDTO.getMinDamage(),
-                    itemDTO.getMaxDamage());
-        }
+        itemService.createItem(itemDTO);
         return "redirect:/database-dar";
     }
 
     //TODO Return Custom Error
-    //TODO REMOVE ALL REPOS FROM CONTROLLERS
 }

@@ -3,6 +3,7 @@ package io.ethertale.reasonanddominationspringdefenseproject.guides.service;
 import io.ethertale.reasonanddominationspringdefenseproject.guides.model.GuidePost;
 import io.ethertale.reasonanddominationspringdefenseproject.guides.model.PostType;
 import io.ethertale.reasonanddominationspringdefenseproject.guides.repo.GuidePostRepo;
+import io.ethertale.reasonanddominationspringdefenseproject.web.dto.GuidePostForm;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,22 +19,33 @@ public class GuidePostServiceImpl implements GuidePostService {
     HttpSession session;
     GuidePostRepo guidePostRepo;
 
+    @Autowired
     public GuidePostServiceImpl(HttpSession session, GuidePostRepo guidePostRepo) {
         this.session = session;
         this.guidePostRepo = guidePostRepo;
     }
 
     @Override
-    public GuidePost createGuidePost(String title, String content, PostType type) {
+    public List<GuidePost> getAllGuidePosts() {
+        return guidePostRepo.findAll();
+    }
+
+    @Override
+    public GuidePost getGuidePostsBySlug(String slug) {
+        return guidePostRepo.findBySlug(slug);
+    }
+
+    @Override
+    public GuidePost createGuidePost(GuidePostForm guidePostForm) {
         GuidePost guidePost = GuidePost.builder()
-                .title(title)
-                .content(content)
+                .title(guidePostForm.getTitle())
+                .content(guidePostForm.getContent())
                 .createdOn(LocalDateTime.now())
-                .type(type)
+                .type(guidePostForm.getPostType())
                 .author(session.getAttribute("user_name").toString())
                 .build();
 
-        guidePost.setSlug(title);
+        guidePost.setSlug(guidePostForm.getTitle());
 
         return guidePostRepo.save(guidePost);
     }

@@ -63,6 +63,17 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public boolean profileExistsByUsername(String username) {
+        return profileRepo.existsByUsername(username);
+    }
+
+    @Override
+    public boolean profileExistsByEmail(String email) {
+        return profileRepo.existsByEmail(email);
+    }
+
+
+    @Override
     public Profile getProfileById(UUID uuid) {
         return profileRepo.findById(uuid).orElse(null);
     }
